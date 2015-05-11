@@ -1,7 +1,7 @@
 {
   "name": "greppen-grok",
   "main": "./lib/greppen-grok",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Use this to grep and grok the current buffer into just what you want",
   "activationCommands": {
     "atom-workspace": "greppen-grok:show"
