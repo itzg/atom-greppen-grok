@@ -12,22 +12,23 @@ module.exports = GreppenGrok =
 
     @model = new GreppenGrokModel
 
-    @panel = atom.workspace.addBottomPanel(item: new GreppenGrokView(@model), visible: false)
-
     # Events subscribed to in atom's system can be easily cleaned up with a CompositeDisposable
     @subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
-    @subscriptions.add atom.commands.add 'atom-workspace', 'greppen-grok:toggle': => @toggle()
+    @subscriptions.add atom.commands.add 'atom-workspace', 'greppen-grok:show', =>
+      @createViews()
+      @panel.show()
+      @view.focusEditor()
 
   deactivate: ->
     @subscriptions.dispose()
     @panel.destroy?()
 
-  toggle: ->
-    console.log 'AtomGreppenGrok was toggled!'
+  createViews: ->
+    return if @view?
 
-    if @panel.isVisible()
-      @panel.hide()
-    else
-      @panel.show()
+    @view = new GreppenGrokView(@model)
+    @panel = atom.workspace.addBottomPanel(item: @view, visible: false, className: 'tool-panel panel-bottom')
+
+    @view.setPanel(@panel)

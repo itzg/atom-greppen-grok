@@ -2,8 +2,8 @@
 'context-menu':
   'atom-text-editor': [
     {
-      'label': 'Toggle Greppen Grok'
-      'command': 'greppen-grok:toggle'
+      'label': 'Greppen Grok'
+      'command': 'greppen-grok:show'
     }
   ]
 'menu': [
@@ -13,8 +13,8 @@
       'label': 'Greppen Grok'
       'submenu': [
         {
-          'label': 'Toggle'
-          'command': 'greppen-grok:toggle'
+          'label': 'Show'
+          'command': 'greppen-grok:show'
         }
       ]
     ]

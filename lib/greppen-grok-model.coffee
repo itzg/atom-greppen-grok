@@ -15,6 +15,7 @@ class GreppenGrokModel
 
     rowsToDelete = ( r for r in [buffer.getLastRow()..0] when shouldDelete(buffer.lineForRow(r)) )
 
-    for r in rowsToDelete
-      console.log("Deleting row #{r}")
-      buffer.deleteRow r
+    buffer.transact ->
+      for r in rowsToDelete
+        console.log("Deleting row #{r}")
+        buffer.deleteRow r
