@@ -1,0 +1,22 @@
+# See https://atom.io/docs/latest/hacking-atom-package-word-count#menus for more details
+'context-menu':
+  'atom-text-editor': [
+    {
+      'label': 'Toggle Greppen Grok'
+      'command': 'greppen-grok:toggle'
+    }
+  ]
+'menu': [
+  {
+    'label': 'Packages'
+    'submenu': [
+      'label': 'Greppen Grok'
+      'submenu': [
+        {
+          'label': 'Toggle'
+          'command': 'greppen-grok:toggle'
+        }
+      ]
+    ]
+  }
+]
