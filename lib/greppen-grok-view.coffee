@@ -10,6 +10,11 @@ class GreppenGrokView extends View
 
   @content: ->
     @div tabIndex: -1, class: 'greppen-grok', =>
+      @header class:'header', =>
+        @span outlet: 'statusLabel', =>
+            @span class: 'status-icon icon'
+            @span class: 'status-msg', 'Ready to grep and grok'
+
       @section class: 'input-block', =>
         @div class: 'input-block-item expands', =>
           @subview 'grepEditor', new TextEditorView(mini:true, placeholderText:'Grep pattern')
@@ -22,7 +27,14 @@ class GreppenGrokView extends View
             @button outlet:'toRemoveButton', class:'btn', click:'handleToRemove', 'to remove'
 
       @section class: 'input-block', =>
-        @div 'Grok controls coming soon...'
+        @div class: 'input-block-item expands', =>
+          @subview 'grokEditor', new TextEditorView(mini:true, placeholderText:'Grok pattern')
+
+        @div class: 'input-block-item', =>
+          @div class: 'btn-group', =>
+            @button outlet:'grokButton', class:'btn', 'Grok'
+          @div class: 'btn-group', =>
+            @button outlet:'grokKeepButton', class:'btn', 'Keep only matching'
 
   initialize: (@model) ->
     console.log("Initializing", @model)
@@ -33,10 +45,10 @@ class GreppenGrokView extends View
   destroy: ->
     @subscriptions?.dispose()
 
-  didShow: ->
+  handleShow: ->
     atom.views.getView(atom.workspace).classList.add('greppen-grok-visible')
 
-  didHide: ->
+  handleHide: ->
     workspaceElement = atom.views.getView(atom.workspace)
     workspaceElement.focus()
     workspaceElement.classList.remove('greppen-grok-visible')
@@ -45,7 +57,11 @@ class GreppenGrokView extends View
     @subscriptions.add atom.commands.add @grepEditor.element,
       'core:confirm': => @handleGrep()
 
-    @grepButton.on 'click', => @handleGrep()
+    @subscriptions.add atom.commands.add @grokEditor.element,
+      'core:confirm': => @handleGrok()
+
+    @grepButton.on 'click', @handleGrep()
+    @grokButton.on 'click', @handleGrok()
 
     @on 'focus', => @grepEditor.focus()
 
@@ -53,9 +69,11 @@ class GreppenGrokView extends View
       'core:close': => @panel?.hide()
       'core:cancel': => @panel?.hide()
 
+    @model.onStatusChange @handleStatusChange
+
   setPanel: (@panel) ->
     @subscriptions.add @panel.onDidChangeVisible (visible) =>
-      if visible then @didShow() else @didHide()
+      if visible then @handleShow() else @handleHide()
 
   applyConfig: ->
     if (@config.grep.keepMatches)
@@ -76,11 +94,25 @@ class GreppenGrokView extends View
     for e in unselected
       e.removeClass 'selected'
 
+  handleStatusChange: ({success, message}) =>
+    @statusLabel.find('.status-msg').text(message)
+
+    icon = @statusLabel.find('.status-icon')
+    icon.toggleClass('icon-info', false)
+    icon.toggleClass('icon-check', success)
+    icon.toggleClass('icon-alert', !success)
+
+    @statusLabel.toggleClass('success', success)
+    @statusLabel.toggleClass('failure', !success)
+
   handleGrep: ->
     console.log("handleGrep")
     @model.doGrep @grepEditor.getText(), @config
     workspaceElement = atom.views.getView(atom.workspace)
     workspaceElement.focus()
+
+  handleGrok: ->
+    console.log("handleGrok")
 
   handleToKeep: ->
     @config.grep.keepMatches = true

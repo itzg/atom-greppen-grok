@@ -3,53 +3,51 @@
 // See https://github.com/atom/atom-dark-ui/blob/master/styles/ui-variables.less
 // for a full listing of what's available.
 @import "ui-variables";
-
 .greppen-grok {
-  @min-width: 200px; // min width before it starts scrolling
-  @item-width: 300px;
-
-  -webkit-user-select: none;
-  padding: @component-padding/2;
-  overflow-x: scroll;
-
-  atom-text-editor {
-    width: 100%;
-  }
+    @min-width: 200px;
+    // min width before it starts scrolling
+    @item-width: 300px;
+    -webkit-user-select: none;
+    padding: @component-padding/2;
+    overflow-x: scroll;
+    atom-text-editor {
+        width: 100%;
+    }
 
     .header {
-      padding: @component-padding/4 @component-padding/2;
-      min-width: @min-width;
+        padding: @component-padding/4 @component-padding/2;
+        min-width: @min-width;
     }
     .header-item {
-      margin: @component-padding/4 0;
+        margin: @component-padding/4 0;
     }
-
     .input-block {
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      min-width: @min-width;
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        min-width: @min-width;
     }
     .input-block-item {
-      display: flex;
-      flex: 1 1 @item-width;
-      padding: @component-padding / 2;
+        display: flex;
+        flex: 1 1 @item-width;
+        padding: @component-padding / 2;
     }
-
     .expands {
-      display: flex;
-      flex: 100 1 @item-width;
+        display: flex;
+        flex: 100 1 @item-width;
     }
-
-
-      .btn-group {
+    .btn-group {
         display: flex;
         flex: 1;
         .btn {
-          flex: 1;
+            flex: 1;
         }
         & + .btn-group {
-          margin-left: @component-padding;
+            margin-left: @component-padding;
         }
-      }
+    }
+
+    .success {
+        color: @text-color-success;
+    }
 }

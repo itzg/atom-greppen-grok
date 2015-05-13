@@ -1,6 +1,14 @@
 
+{Emitter} = require 'atom'
+
 module.exports =
 class GreppenGrokModel
+
+  constructor: ->
+    @emitter = new Emitter
+
+  destroy: ->
+    @emitter.dispose()
 
   doGrep: (pattern, config) ->
     console.log("Performing grep with the pattern #{pattern}", config)
@@ -17,5 +25,10 @@ class GreppenGrokModel
 
     buffer.transact ->
       for r in rowsToDelete
-        console.log("Deleting row #{r}")
+        console.debug("Deleting row #{r}")
         buffer.deleteRow r
+
+    @emitter.emit 'status-change', success:true, message:"Removed #{rowsToDelete.length} rows"
+
+  onStatusChange: (callback) ->
+    @emitter.on 'status-change', callback
