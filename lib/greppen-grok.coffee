@@ -29,6 +29,6 @@ module.exports = GreppenGrok =
     return if @view?
 
     @view = new GreppenGrokView(@model)
-    @panel = atom.workspace.addBottomPanel(item: @view, visible: false, className: 'tool-panel panel-bottom')
+    @panel = atom.workspace.addBottomPanel(item: @view, visible: false, className: 'tool-panel panel-bottom greppen-grok-panel')
 
     @view.setPanel(@panel)

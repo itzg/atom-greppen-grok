@@ -62,14 +62,16 @@ class GreppenGrokView extends View
     @subscriptions.add atom.commands.add @grokEditor.element,
       'core:confirm': => @handleGrok()
 
-    @grepButton.on 'click', @handleGrep()
-    @grokButton.on 'click', @handleGrok()
+    @grepButton.on 'click', @handleGrep
+    @grokButton.on 'click', @handleGrok
 
     @on 'focus', => @grepEditor.focus()
 
     @subscriptions.add atom.commands.add @element,
       'core:close': => @panel?.hide()
       'core:cancel': => @panel?.hide()
+      'greppen-grok:focus-next': @toggleFocus
+      'greppen-grok:focus-previous': @toggleFocus
 
     @model.onStatusChange @handleStatusChange
 
@@ -91,6 +93,11 @@ class GreppenGrokView extends View
     @grepEditor.focus()
     @grepEditor.getModel().selectAll()
 
+  toggleFocus: =>
+    if @grepEditor.hasClass('is-focused')
+      @grokEditor.focus()
+    else
+      @grepEditor.focus()
 
   toggleButtons: (selected, unselected...) ->
     selected.addClass 'selected'
