@@ -62,8 +62,8 @@ class GreppenGrokView extends View
     @subscriptions.add atom.commands.add @grokEditor.element,
       'core:confirm': => @handleGrok()
 
-    @grepButton.on 'click', @handleGrep
-    @grokButton.on 'click', @handleGrok
+    @grepButton.on 'click', => @handleGrep()
+    @grokButton.on 'click', => @handleGrok()
 
     @on 'focus', => @grepEditor.focus()
 
@@ -115,14 +115,19 @@ class GreppenGrokView extends View
     @statusLabel.toggleClass('success', success)
     @statusLabel.toggleClass('failure', !success)
 
-  handleGrep: ->
-    console.log("handleGrep")
-    @model.doGrep @grepEditor.getText(), @config
+  focusOnWorkspace: ->
     workspaceElement = atom.views.getView(atom.workspace)
     workspaceElement.focus()
 
+  handleGrep: ->
+    console.log("handleGrep")
+    @model.doGrep @grepEditor.getText(), @config
+    @focusOnWorkspace()
+
   handleGrok: ->
     console.log("handleGrok")
+    @model.doGrok @grokEditor.getText(), @config
+    @focusOnWorkspace()
 
   handleToKeep: ->
     @config.grep.keepMatches = true

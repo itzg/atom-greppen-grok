@@ -10,7 +10,7 @@ describe 'GrokExpression suite', ->
       grokExpression = new GrokExpression('key=\\d+')
 
     it 'should have no placeholders', ->
-      expect(grokExpression.placeholders).toEqual []
+      expect(grokExpression.hasPlaceholders()).toBeFalsy()
       expect(grokExpression.reOverallPattern).toEqual 'key=\\d+'
 
     it 'should match and be trimmed', ->
@@ -23,10 +23,30 @@ describe 'GrokExpression suite', ->
       grokExpression = new GrokExpression('level=%{level}, direction=')
 
     it 'should have placeholders', ->
-      expect(grokExpression.placeholders.length).toEqual 1
+      expect(grokExpression.hasPlaceholders()).toBeTruthy()
+      expect(grokExpression.getPlaceholderNames()).toEqual ['level']
 
-    it 'should trim still', ->
+    it 'should trim and extract', ->
       result = grokExpression.exec('prefix: level=info, direction=up')
       expect(result.matched).toBeTruthy()
       expect(result.trimmedAs).toEqual 'level=info, direction='
       expect(result.values.level).toEqual 'info'
+
+  describe 'when given more than one placeholder', ->
+    beforeEach ->
+      grokExpression = new GrokExpression('level=%{level}, direction=%{direction}$')
+
+    it 'should have placeholders', ->
+      expect(grokExpression.hasPlaceholders()).toBeTruthy()
+      expect(grokExpression.getPlaceholderNames()).toEqual ['level','direction']
+
+    it 'should trim and extract', ->
+      result = grokExpression.exec('prefix: level=info, direction=up')
+      expect(result.matched).toBeTruthy()
+      expect(result.trimmedAs).toEqual 'level=info, direction=up'
+      expect(result.values.level).toEqual 'info'
+      expect(result.values.direction).toEqual 'up'
+
+    it 'should be fine with not matching', ->
+      result = grokExpression.exec('prefix: time=later')
+      expect(result.matched).toBeFalsy()

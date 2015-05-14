@@ -13,6 +13,12 @@ class GrokExpression
 
     @reOverallPattern = pattern.replace(/%{.+?}/g, '(.+?)')
 
+  hasPlaceholders: ->
+    @placeholders.length > 0
+
+  getPlaceholderNames: ->
+    (p.name for p in @placeholders)
+
   exec: (str) ->
     re = new RegExp(@reOverallPattern, 'g')
     match = re.exec(str)
