@@ -7,6 +7,8 @@ class GreppenGrokView extends View
   config:
     grep:
       keepMatches: true
+    grok:
+      keepOnlyMatchingLines: false
 
   @content: ->
     @div tabIndex: -1, class: 'greppen-grok', =>
@@ -34,7 +36,7 @@ class GreppenGrokView extends View
           @div class: 'btn-group', =>
             @button outlet:'grokButton', class:'btn', 'Grok'
           @div class: 'btn-group', =>
-            @button outlet:'grokKeepButton', class:'btn', 'Keep only matching'
+            @button outlet:'grokKeepButton', class:'btn', click: 'handleGrokToKeep', 'Keep only matching'
 
   initialize: (@model) ->
     console.log("Initializing", @model)
@@ -80,6 +82,7 @@ class GreppenGrokView extends View
       @toggleButtons(@toKeepButton, @toRemoveButton)
     else
       @toggleButtons(@toRemoveButton, @toKeepButton)
+    @grokKeepButton.toggleClass('selected', @config.grok.keepOnlyMatchingLines)
 
   focusEditor: ->
     selectedText = atom.workspace.getActiveTextEditor()?.getSelectedText?()
@@ -120,4 +123,9 @@ class GreppenGrokView extends View
 
   handleToRemove: ->
     @config.grep.keepMatches = false
+    @applyConfig()
+
+  handleGrokToKeep: ->
+    currently = @grokKeepButton.hasClass('selected')
+    @config.grok.keepOnlyMatchingLines = !currently
     @applyConfig()

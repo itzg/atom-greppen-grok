@@ -1,5 +1,6 @@
 
 {Emitter} = require 'atom'
+GrokExpression = require './grok-expression'
 
 module.exports =
 class GreppenGrokModel
