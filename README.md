@@ -15,3 +15,9 @@ to
 
 Removing blank lines:
 ![Screenshot of blank line regex](http://i.imgur.com/CenXfWk.png)
+
+Or grok a value out of
+![Screenshot before grok](http://i.imgur.com/nQnz0zK.png)
+
+to
+![result of grok](http://i.imgur.com/VFwvHER.png)
