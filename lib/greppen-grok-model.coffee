@@ -25,7 +25,9 @@ class GreppenGrokModel
     rowsToDelete = ( r for r in [buffer.getLastRow()..0] when shouldDelete(buffer.lineForRow(r)) )
 
     buffer.transact ->
-      @deleteRows(buffer, rowsToDelete)
+      for r in rowsToDelete
+        console.debug("Deleting row #{r}")
+        buffer.deleteRow r
 
     @emitter.emit 'status-change', success:true, message:"Removed #{rowsToDelete.length} rows."
 
@@ -72,12 +74,6 @@ class GreppenGrokModel
           " and removed #{rowsToDelete.length}."
         else
           "."
-
-
-  deleteRows: (buffer, rowsToDelete) ->
-    for r in rowsToDelete
-      console.debug("Deleting row #{r}")
-      buffer.deleteRow r
 
   onStatusChange: (callback) ->
     @emitter.on 'status-change', callback
