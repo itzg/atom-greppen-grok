@@ -12,7 +12,7 @@ describe "AtomGreppenGrok", ->
     workspaceElement = atom.views.getView(atom.workspace)
     activationPromise = atom.packages.activatePackage('greppen-grok')
 
-  describe "when the greppen-grok:show event is triggered", ->
+  describe "when the greppen-grok:toggle event is triggered", ->
     it "shows the view", ->
       # This test shows you an integration test testing at the view level.
 
@@ -26,7 +26,7 @@ describe "AtomGreppenGrok", ->
 
       # This is an activation event, triggering it causes the package to be
       # activated.
-      atom.commands.dispatch workspaceElement, 'greppen-grok:show'
+      atom.commands.dispatch workspaceElement, 'greppen-grok:toggle'
 
       waitsForPromise ->
         activationPromise

@@ -4,7 +4,7 @@
   "version": "0.2.1",
   "description": "Use this to grep and grok the current buffer into just what you want",
   "activationCommands": {
-    "atom-workspace": "greppen-grok:show"
+    "atom-workspace": "greppen-grok:toggle"
   },
   "repository": "https://github.com/itzg/atom-greppen-grok",
   "license": "MIT",

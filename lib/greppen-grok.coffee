@@ -16,6 +16,14 @@ module.exports = GreppenGrok =
     @subscriptions = new CompositeDisposable
 
     # Register command that toggles this view
+    @subscriptions.add atom.commands.add 'atom-workspace', 'greppen-grok:toggle', =>
+      @createViews()
+      if @panel.isVisible()
+        @panel.hide()
+      else
+        @panel.show()
+        @view.focusEditor()
+    # Register 'show' command for backward compatibility
     @subscriptions.add atom.commands.add 'atom-workspace', 'greppen-grok:show', =>
       @createViews()
       @panel.show()
